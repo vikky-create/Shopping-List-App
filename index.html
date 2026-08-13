@@ -1,236 +1,141 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Shopping List</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+let shoppingItems = [];
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
-      text-align: center;
-    }
+function addItem() {
+    const itemName = document.getElementById("itemName");
+    const quantity = document.getElementById("quantity");
 
-    .box {
-      max-width: 500px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-    }
+    const name = itemName.value.trim();
+    const qty = parseInt(quantity.value);
 
-    h1 {
-      margin-bottom: 10px;
-    }
-
-    .reg-label {
-      display: block;
-      text-align: left;
-      font-weight: bold;
-      margin: 10px 0 5px;
-    }
-
-    .reg-input,
-    .search-input,
-    .item-input {
-      box-sizing: border-box;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    .reg-input,
-    .search-input {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-
-    .add-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .item-input {
-      flex: 1;
-      min-width: 0;
-    }
-
-    button {
-      padding: 12px 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    .add-btn {
-      background: #222;
-      color: white;
-    }
-
-    ul {
-      padding: 0;
-      list-style: none;
-    }
-
-    li {
-      background: #eee;
-      margin: 8px 0;
-      padding: 10px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .item-name {
-      flex: 1;
-      text-align: left;
-      word-break: break-word;
-    }
-
-    .quantity {
-      width: 55px;
-      padding: 8px;
-      text-align: center;
-      border: 1px solid #bbb;
-      border-radius: 6px;
-    }
-
-    .qty-btn {
-      padding: 8px 11px;
-    }
-
-    .delete-btn {
-      padding: 8px 10px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="box">
-
-    <h1>🛒 My Shopping List</h1>
-
-    <label class="reg-label" for="regNumber">
-      Registration Number
-    </label>
-
-    <input
-      class="reg-input"
-      id="regNumber"
-      type="text"
-      value=2023030213492
-    >
-
-    <input
-      class="search-input"
-      id="search"
-      type="text"
-      placeholder="🔍 Search items"
-      oninput="searchItems()"
-    >
-
-    <div class="add-row">
-      <input
-        class="item-input"
-        id="item"
-        type="text"
-        placeholder="Enter an item"
-      >
-
-      <button class="add-btn" onclick="addItem()">
-        Add
-      </button>
-    </div>
-
-    <ul id="list"></ul>
-
-  </div>
-
-  <script>
-
-    function addItem() {
-
-      const input = document.getElementById("item");
-      const item = input.value.trim();
-
-      if (item === "") {
+    if (name === "") {
+        alert("Please enter a shopping item.");
         return;
-      }
-
-      const li = document.createElement("li");
-
-      const name = document.createElement("span");
-      name.className = "item-name";
-      name.textContent = item;
-
-      const minus = document.createElement("button");
-      minus.className = "qty-btn";
-      minus.textContent = "−";
-      minus.onclick = function() {
-        quantity.value = Math.max(1, Number(quantity.value) - 1);
-      };
-
-      const quantity = document.createElement("input");
-      quantity.className = "quantity";
-      quantity.type = "number";
-      quantity.min = "1";
-      quantity.value = "1";
-
-      const plus = document.createElement("button");
-      plus.className = "qty-btn";
-      plus.textContent = "+";
-      plus.onclick = function() {
-        quantity.value = Number(quantity.value) + 1;
-      };
-
-      const remove = document.createElement("button");
-      remove.className = "delete-btn";
-      remove.textContent = "❌";
-      remove.onclick = function() {
-        li.remove();
-      };
-
-      li.appendChild(name);
-      li.appendChild(minus);
-      li.appendChild(quantity);
-      li.appendChild(plus);
-      li.appendChild(remove);
-
-      document.getElementById("list").appendChild(li);
-
-      input.value = "";
-      input.focus();
     }
 
-    function searchItems() {
+    if (isNaN(qty) || qty < 1) {
+        alert("Please enter a valid quantity.");
+        return;
+    }
 
-      const search =
-        document.getElementById("search").value.toLowerCase();
+    shoppingItems.push({
+        name: name,
+        quantity: qty,
+        purchased: false
+    });
 
-      const items =
-        document.querySelectorAll("#list li");
+    itemName.value = "";
+    quantity.value = 1;
 
-      items.forEach(function(item) {
+    displayItems();
+}
 
-        const name =
-          item.querySelector(".item-name").textContent.toLowerCase();
+function displayItems() {
+    const list = document.getElementById("shoppingList");
+    const search = document
+        .getElementById("search")
+        .value
+        .toLowerCase();
 
-        if (name.includes(search)) {
-          item.style.display = "flex";
-        } else {
-          item.style.display = "none";
+    list.innerHTML = "";
+
+    const filteredItems = shoppingItems.filter(item =>
+        item.name.toLowerCase().includes(search)
+    );
+
+    filteredItems.forEach((item, index) => {
+
+        const originalIndex = shoppingItems.indexOf(item);
+
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "item";
+
+        const info = document.createElement("div");
+        info.className = "item-info";
+
+        if (item.purchased) {
+            info.classList.add("purchased");
         }
 
-      });
+        info.innerHTML = `
+            ${item.name}<br>
+            Quantity: ${item.quantity}
+        `;
+
+        const buttons = document.createElement("div");
+        buttons.className = "buttons";
+
+        const purchasedButton = document.createElement("button");
+        purchasedButton.textContent = item.purchased
+            ? "Unpurchase"
+            : "Purchased";
+
+        purchasedButton.onclick = function () {
+            shoppingItems[originalIndex].purchased =
+                !shoppingItems[originalIndex].purchased;
+
+            displayItems();
+        };
+
+        const editButton = document.createElement("button");
+        editButton.textContent = "Edit";
+
+        editButton.onclick = function () {
+            editItem(originalIndex);
+        };
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+
+        deleteButton.onclick = function () {
+            deleteItem(originalIndex);
+        };
+
+        buttons.appendChild(purchasedButton);
+        buttons.appendChild(editButton);
+        buttons.appendChild(deleteButton);
+
+        itemDiv.appendChild(info);
+        itemDiv.appendChild(buttons);
+
+        list.appendChild(itemDiv);
+    });
+
+    document.getElementById("totalItems").textContent =
+        shoppingItems.length;
+}
+
+function deleteItem(index) {
+    shoppingItems.splice(index, 1);
+    displayItems();
+}
+
+function editItem(index) {
+
+    const newName = prompt(
+        "Enter the new item name:",
+        shoppingItems[index].name
+    );
+
+    if (newName === null || newName.trim() === "") {
+        return;
     }
 
-  </script>
-<p>Registration Number:2023030213492
-</body>
-</html>
+    const newQuantity = prompt(
+        "Enter the new quantity:",
+        shoppingItems[index].quantity
+    );
+
+    const qty = parseInt(newQuantity);
+
+    if (isNaN(qty) || qty < 1) {
+        alert("Invalid quantity.");
+        return;
+    }
+
+    shoppingItems[index].name = newName.trim();
+    shoppingItems[index].quantity = qty;
+
+    displayItems();
+}
+
+displayItems();
