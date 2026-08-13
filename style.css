@@ -1,0 +1,158 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px 15px;
+    font-family: Arial, sans-serif;
+    background: #f4f7f6;
+    color: #111;
+}
+
+.container {
+    max-width: 620px;
+    margin: auto;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    text-align: center;
+    font-size: 42px;
+    margin: 0 0 40px;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 18px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 22px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #009688;
+}
+
+#quantity {
+    width: 100%;
+}
+
+.form button {
+    grid-column: 1 / -1;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    background: #009688;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.form button:hover {
+    background: #00796b;
+}
+
+#search {
+    margin-top: 30px;
+}
+
+h2 {
+    font-size: 25px;
+    margin-top: 25px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: #f1f1f1;
+    margin: 12px 0;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.item-info {
+    font-size: 23px;
+    line-height: 1.4;
+    flex: 1;
+}
+
+.item-info.purchased {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.buttons button {
+    border: none;
+    background: #009688;
+    color: white;
+    padding: 15px 22px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.buttons button:hover {
+    background: #00796b;
+}
+
+.registration {
+    max-width: 620px;
+    margin: 45px auto 0;
+    font-size: 22px;
+}
+
+/* Phone screen */
+@media (max-width: 600px) {
+
+    body {
+        padding: 25px 10px;
+    }
+
+    .container {
+        padding: 30px 20px;
+    }
+
+    h1 {
+        font-size: 38px;
+    }
+
+    .form {
+        grid-template-columns: 1fr 145px;
+    }
+
+    .item {
+        align-items: flex-start;
+    }
+
+    .item-info {
+        font-size: 20px;
+    }
+
+    .buttons {
+        justify-content: flex-end;
+    }
+
+    .buttons button {
+        font-size: 17px;
+        padding: 14px 18px;
+    }
+}
