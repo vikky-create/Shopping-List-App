@@ -28,7 +28,7 @@ function addItem() {
     }
 
     shoppingItems.push(new ShoppingItem(name, qty));
-    });
+    
 
     itemName.value = "";
     quantity.value = 1;
