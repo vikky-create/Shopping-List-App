@@ -1,4 +1,14 @@
-let shoppingItems = [];
+class ShoppingItem {
+    constructor(name, quantity) {
+        this.name = name;
+        this.quantity = quantity;
+        this.purchased = false;
+    }
+
+    getDetails() {
+        return `${this.name} - Quantity: ${this.quantity}`;
+    }
+}let shoppingItems = [];
 
 function addItem() {
     const itemName = document.getElementById("itemName");
@@ -17,10 +27,7 @@ function addItem() {
         return;
     }
 
-    shoppingItems.push({
-        name: name,
-        quantity: qty,
-        purchased: false
+    shoppingItems.push(new ShoppingItem(name, qty));
     });
 
     itemName.value = "";
